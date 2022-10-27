@@ -49,7 +49,7 @@ def get_full_list():
     movies = title_ratings.get_all_records()
     full_list = sorted(movies, key=lambda d: d['Ratings'], reverse=True)
     for movie in full_list:
-        print(f'Title: {movie["Title"]} - Ratings: {movie["Ratings"]}')
+        print(f'Title: {movie["Title"]} - Ratings: {movie["Ratings"]} - Movie ID: {movie["Movie_ID"]}')
     input('Press Enter to Return to Menu: ')
     clear()
 
@@ -61,7 +61,7 @@ def get_top_ten():
     movies = title_ratings.get_all_records()
     newlist = sorted(movies, key=lambda d: d['Ratings'], reverse=True)
     for movie in newlist[0:10]:
-        print(f'Title: {movie["Title"]} - Ratings: {movie["Ratings"]}')
+        print(f'Title: {movie["Title"]} - Ratings: {movie["Ratings"]} - Movie ID: {movie["Movie_ID"]}')
     input('Press Enter to Return to Menu: ')
     clear()
 
@@ -71,8 +71,11 @@ def update_worksheet():
     clear()
     title = input('Enter Movie Title: ')
     raiting = input('Enter Movie Rating (Use only point numbers ex. 4.3): ')
-    worksheet_to_update = SHEET.worksheet("titel_ratings")
-    worksheet_to_update.append_row([title, raiting])
+    worksheet_to_update = SHEET.worksheet("title_ratings")
+    movies = title_ratings.get_all_records()
+    max_value = max(movies, key=lambda x: int(x['Movie_ID']))
+    new_id = int(max_value['Movie_ID']) +1
+    worksheet_to_update.append_row([title, raiting, new_id])
     print(f"Added - Movie: {title} Rating: {raiting}")
     input('Press Enter to Return to Menu: ')
     clear()
