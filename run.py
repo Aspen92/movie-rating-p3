@@ -17,9 +17,6 @@ SHEET = GSPREAD_CLIENT.open('movie_ratings_p3')
 
 titel_ratings = SHEET.worksheet('titel_ratings')
 
-# Meny, olika val och välkommen
-
-
 
 menu_options = {
     1: 'Show Full Movies List',
@@ -54,6 +51,17 @@ def get_top_ten():
     for movie in newlist:
         print(movie)
 
+def update_worksheet():
+    """
+    Receives a list of integers to be inserted into a worksheet
+    Update the relevant worksheet with the data provided
+    """
+    clear()
+    title = input('Enter Movie Title: ')
+    raiting = input('Enter Movie Raiting: ')
+    worksheet_to_update = SHEET.worksheet("titel_ratings")
+    worksheet_to_update.append_row([title, raiting])
+    print(f"Added - Movie: {title} Raiting: {raiting}")
 
 
 def main():
@@ -65,7 +73,7 @@ def main():
         elif option == 2:
             get_top_ten()
         elif option == 3:
-            print('Handle option \'Option 3\'')
+            update_worksheet()
         elif option == 4:
             print('Thanks message before exiting')
             exit()
