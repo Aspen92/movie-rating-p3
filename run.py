@@ -41,11 +41,19 @@ def print_menu():
 
 def get_full_list():
     clear()
-    list_of_lists = titel_ratings.get_all_records()
-    for list in list_of_lists:
-        print(list)
+    movies = titel_ratings.get_all_records()
+    for movie in movies:
+        print(movie)
     input('Press Enter to Return to Menu: ')
     clear()
+
+def get_top_ten():
+    clear()
+    movies = titel_ratings.get_all_records()
+    newlist = sorted(movies, key=lambda d: d['Ratings'], reverse=True)
+    for movie in newlist:
+        print(movie)
+
 
 
 def main():
@@ -55,7 +63,7 @@ def main():
         if option == 1:
             get_full_list()
         elif option == 2:
-            print('Handle option \'Option 2\'')
+            get_top_ten()
         elif option == 3:
             print('Handle option \'Option 3\'')
         elif option == 4:
