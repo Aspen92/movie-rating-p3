@@ -1,0 +1,68 @@
+import gspread
+from google.oauth2.service_account import Credentials
+import os
+clear = lambda: os.system('clear')
+
+
+SCOPE = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/drive"
+    ]
+
+CREDS = Credentials.from_service_account_file('creds.json')
+SCOPED_CREDS = CREDS.with_scopes(SCOPE)
+GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
+SHEET = GSPREAD_CLIENT.open('movie_ratings_p3')
+
+titel_ratings = SHEET.worksheet('titel_ratings')
+
+# Meny, olika val och välkommen
+
+
+
+menu_options = {
+    1: 'Show Full Movies List',
+    2: 'Show Top 10 Movies',
+    3: 'Add New Movie & Rating',
+    4: 'Exit Program',
+}
+
+
+"""
+
+"""
+
+def print_menu():
+    print("Welcome movie blabla")
+    print("Enter options 1-4")
+    for key in menu_options.keys():
+        print(key, '--', menu_options[key])
+
+def get_full_list():
+    clear()
+    list_of_lists = titel_ratings.get_all_records()
+    for list in list_of_lists:
+        print(list)
+    input('Press Enter to Return to Menu: ')
+    clear()
+
+
+def main():
+    while(True):
+        print_menu()
+        option = int(input('Enter your choice: ')) 
+        if option == 1:
+            get_full_list()
+        elif option == 2:
+            print('Handle option \'Option 2\'')
+        elif option == 3:
+            print('Handle option \'Option 3\'')
+        elif option == 4:
+            print('Thanks message before exiting')
+            exit()
+        else:
+            print('Invalid option. Please enter a number between 1 and 4.')
+
+
+main()
