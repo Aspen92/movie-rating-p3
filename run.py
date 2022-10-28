@@ -1,7 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
 import os
-from pprint import pprint
 clear = lambda: os.system('clear')
 
 
@@ -37,8 +36,17 @@ menu_options = {
 def print_menu():
     """
     """
-    print("Welcome movie blabla")
-    print("Enter options 1-4")
+    print("\n    WELCOME TO YOUR OWN MOVIE DATABASE PROGRAM!")
+    print("    -------------------------------------------")
+    welcome_msg = """
+    This program allows to view your complete movie list and add your latest
+    movie you have watched.
+    You can give your movies a rating and the program will sort your movies
+    from best to worst.
+    You can also remove movies from the list using the ID number of the movie.
+    """
+    print(welcome_msg)
+    print("Enter options 1-4\n")
     for key in menu_options.keys():
         print(key, '--', menu_options[key])
 
@@ -46,23 +54,24 @@ def get_full_list():
     """
     """
     clear()
+    print("ALL MOVIES:\n")
     movies = title_ratings.get_all_records()
     full_list = sorted(movies, key=lambda d: d['Ratings'], reverse=True)
     for movie in full_list:
-        print(f'Title: {movie["Title"]} - Ratings: {movie["Ratings"]} - Movie ID: {movie["Movie_ID"]}')
-    input('Press Enter to Return to Menu: ')
+        print(f'Title: {movie["Title"]}\nRatings: {movie["Ratings"]}\nMovie ID: {movie["Movie_ID"]}\n')
+    input('\nPress Enter to Return to Menu:\n')
     clear()
 
 def get_top_ten():
     """
     """
     clear()
-    print("Here is the Top 10 Movies")
+    print("TOP 10 MOVIES\n")
     movies = title_ratings.get_all_records()
     newlist = sorted(movies, key=lambda d: d['Ratings'], reverse=True)
     for movie in newlist[0:10]:
-        print(f'Title: {movie["Title"]} - Ratings: {movie["Ratings"]} - Movie ID: {movie["Movie_ID"]}')
-    input('Press Enter to Return to Menu: ')
+        print(f'Title: {movie["Title"]}\nRatings: {movie["Ratings"]}\nMovie ID: {movie["Movie_ID"]}\n')
+    input('Press Enter to Return to Menu:\n')
     clear()
 
 def update_worksheet():
@@ -70,14 +79,14 @@ def update_worksheet():
     """
     clear()
     title = input('Enter Movie Title: ')
-    raiting = input('Enter Movie Rating (Use only point numbers ex. 4.3): ')
+    raiting = input('Enter Movie Rating (0.0 - 5.0): ')
     worksheet_to_update = SHEET.worksheet("title_ratings")
     movies = title_ratings.get_all_records()
     max_value = max(movies, key=lambda x: int(x['Movie_ID']))
     new_id = int(max_value['Movie_ID']) +1
     worksheet_to_update.append_row([title, raiting, new_id])
-    print(f"Added - Movie: {title} Rating: {raiting}")
-    input('Press Enter to Return to Menu: ')
+    print(f"\nADDED\nMovie: {title}\nRating: {raiting}")
+    input('\nPress Enter to Return to Menu: ')
     clear()
 
 
@@ -86,7 +95,7 @@ def main():
     """
     while(True):
         print_menu()
-        option = int(input('Enter your choice: ')) 
+        option = int(input('\nEnter your choice:\n')) 
         if option == 1:
             get_full_list()
         elif option == 2:
