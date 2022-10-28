@@ -29,10 +29,6 @@ menu_options = {
 }
 
 
-"""
-
-"""
-
 def print_menu():
     """
     """
@@ -50,6 +46,7 @@ def print_menu():
     for key in menu_options.keys():
         print(key, '--', menu_options[key])
 
+
 def get_full_list():
     """
     """
@@ -58,9 +55,10 @@ def get_full_list():
     movies = title_ratings.get_all_records()
     full_list = sorted(movies, key=lambda d: d['Ratings'], reverse=True)
     for movie in full_list:
-        print(f'Title: {movie["Title"]}\nRatings: {movie["Ratings"]}\nMovie ID: {movie["Movie_ID"]}\n')
+        print(f'Title: {movie["Title"]}\nRatings: {movie["Ratings"]}\n')
     input('\nPress Enter to Return to Menu:\n')
     clear()
+
 
 def get_top_ten():
     """
@@ -70,24 +68,51 @@ def get_top_ten():
     movies = title_ratings.get_all_records()
     newlist = sorted(movies, key=lambda d: d['Ratings'], reverse=True)
     for movie in newlist[0:10]:
-        print(f'Title: {movie["Title"]}\nRatings: {movie["Ratings"]}\nMovie ID: {movie["Movie_ID"]}\n')
+        print(f'Title: {movie["Title"]}\nRatings: {movie["Ratings"]}\n')
     input('Press Enter to Return to Menu:\n')
     clear()
+
 
 def update_worksheet():
     """
     """
     clear()
     title = input('Enter Movie Title: ')
-    raiting = input('Enter Movie Rating (0.0 - 5.0): ')
-    worksheet_to_update = SHEET.worksheet("title_ratings")
-    movies = title_ratings.get_all_records()
-    max_value = max(movies, key=lambda x: int(x['Movie_ID']))
-    new_id = int(max_value['Movie_ID']) +1
-    worksheet_to_update.append_row([title, raiting, new_id])
-    print(f"\nADDED\nMovie: {title}\nRating: {raiting}")
-    input('\nPress Enter to Return to Menu: ')
-    clear()
+    rating = input('Enter Movie Rating (0.0 - 5.0): ')
+    if (validate_input_rating(rating)):
+        if (float(rating) <= 5.0):
+            worksheet_to_update = SHEET.worksheet("title_ratings")
+            movies = title_ratings.get_all_records()
+            max_value = max(movies, key=lambda x: int(x['Movie_ID']))
+            new_id = int(max_value['Movie_ID']) +1
+            worksheet_to_update.append_row([title, rating, new_id])
+            print(f"\nADDED\nMovie: {title}\nRating: {rating}")
+            input('\nPress Enter to Return to Menu: ')
+            clear()
+        else:
+            clear()
+            print("Invalid data: Rating must be a float between 0.0 - 5.0.\n")
+            input('\nPress Enter to return to add new movie option: ')
+            update_worksheet()
+    else:
+        input('\nPress Enter to return to add new movie option: ')
+        update_worksheet()
+
+
+def validate_input_rating(value):
+    """
+    """
+    try:
+        float(value)
+    except ValueError():
+        clear()
+        print("Invalid data: Rating must be a float between 0.0 - 5.0.\n")
+        return False
+
+    return True
+
+def delete_movie():
+    title_ratings.delete_rows(2)
 
 
 def main():
@@ -103,7 +128,7 @@ def main():
         elif option == 3:
             update_worksheet()
         elif option == 4:
-            print('Delete')
+            delete_movie()
         elif option == 5:
             print('Thanks message before exiting')
             exit()
@@ -112,3 +137,6 @@ def main():
 
 
 main()
+
+
+#Movie ID: {movie["Movie_ID"]}\n
