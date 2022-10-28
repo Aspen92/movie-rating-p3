@@ -10,7 +10,7 @@ SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
     "https://www.googleapis.com/auth/drive"
-    ]
+]
 
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
@@ -34,8 +34,8 @@ def print_menu():
     print("\n    WELCOME TO YOUR OWN MOVIE DATABASE PROGRAM!")
     print("    -------------------------------------------")
     welcome_msg = """
-    This program allows to view your complete movie list and add your latest
-    movie you have watched.
+    This program allows you to view your complete movie list and add your
+    latest movie you have watched.
     You can give your movies a rating and the program will sort your movies
     from best to worst.
     You can also remove movies from the list using the ID number of the movie.
@@ -114,7 +114,7 @@ def validate_input_rating(value):
     """
     try:
         float(value)
-    except ValueError():
+    except ValueError:
         clear()
         print("Invalid data: Rating must be a float between 0.0 - 5.0.\n")
         return False
@@ -145,20 +145,25 @@ def main():
     """
     while True:
         print_menu()
-        option = int(input('\nEnter your choice:\n'))
-        if option == 1:
-            get_full_list()
-        elif option == 2:
-            get_top_ten()
-        elif option == 3:
-            update_worksheet()
-        elif option == 4:
-            delete_movie()
-        elif option == 5:
-            print('Thanks message before exiting')
-            exit()
-        else:
-            print('Invalid option. Please enter a number between 1 and 4.')
+        try:
+            option = int(input('\nEnter your choice:\n'))
+            if option == 1:
+                get_full_list()
+            elif option == 2:
+                get_top_ten()
+            elif option == 3:
+                update_worksheet()
+            elif option == 4:
+                delete_movie()
+            elif option == 5:
+                print('Thanks message before exiting')
+                exit()
+            else:
+                print('Invalid option. Please enter a number between 1 and 4.')
+        except ValueError:
+            clear()
+            print("Invalid option. Please enter a number between 1 and 4.\n")
+            input('\nPress Enter to return to menu: ')
 
 
 main()
