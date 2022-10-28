@@ -1,7 +1,9 @@
+"""
+asd
+"""
+import os
 import gspread
 from google.oauth2.service_account import Credentials
-import os
-clear = lambda: os.system('clear')
 
 
 SCOPE = [
@@ -16,10 +18,6 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('movie_ratings_p3')
 
 title_ratings = SHEET.worksheet('title_ratings')
-
-
-
-
 menu_options = {
     1: 'Show Full Movies List',
     2: 'Show Top 10 Movies',
@@ -31,6 +29,7 @@ menu_options = {
 
 def print_menu():
     """
+    asda
     """
     print("\n    WELCOME TO YOUR OWN MOVIE DATABASE PROGRAM!")
     print("    -------------------------------------------")
@@ -43,12 +42,20 @@ def print_menu():
     """
     print(welcome_msg)
     print("Enter options 1-4\n")
-    for key in menu_options.keys():
-        print(key, '--', menu_options[key])
+    for key, value in menu_options.items():
+        print(key, '--', value)
+
+
+def clear():
+    """
+    asd
+    """
+    os.system('clear')
 
 
 def get_full_list():
     """
+    asda
     """
     clear()
     print("ALL MOVIES:\n")
@@ -62,6 +69,7 @@ def get_full_list():
 
 def get_top_ten():
     """
+    asd
     """
     clear()
     print("TOP 10 MOVIES\n")
@@ -75,16 +83,17 @@ def get_top_ten():
 
 def update_worksheet():
     """
+    asd
     """
     clear()
     title = input('Enter Movie Title: ')
     rating = input('Enter Movie Rating (0.0 - 5.0): ')
-    if (validate_input_rating(rating)):
-        if (float(rating) <= 5.0):
+    if validate_input_rating(rating):
+        if float(rating) <= 5.0:
             worksheet_to_update = SHEET.worksheet("title_ratings")
             movies = title_ratings.get_all_records()
             max_value = max(movies, key=lambda x: int(x['Movie_ID']))
-            new_id = int(max_value['Movie_ID']) +1
+            new_id = int(max_value['Movie_ID']) + 1
             worksheet_to_update.append_row([title, rating, new_id])
             print(f"\nADDED\nMovie: {title}\nRating: {rating}")
             input('\nPress Enter to Return to Menu: ')
@@ -101,6 +110,7 @@ def update_worksheet():
 
 def validate_input_rating(value):
     """
+    asd
     """
     try:
         float(value)
@@ -111,16 +121,31 @@ def validate_input_rating(value):
 
     return True
 
+
 def delete_movie():
-    title_ratings.delete_rows(2)
+    """
+    asd
+    """
+    clear()
+    print("ALL MOVIES:\n")
+    movies = title_ratings.get_all_records()
+    full_list = sorted(movies, key=lambda d: d['Ratings'], reverse=True)
+    for movie in full_list:
+        print(f'Title: {movie["Title"]}\nRatings: {movie["Ratings"]}')
+        print(f'Movie ID: {movie["Movie_ID"]}\n')
+    movie_id = input('Enter Movie ID: ')
+    row = title_ratings.find(movie_id, in_column=3).row
+    title_ratings.delete_rows(row)
+    clear()
 
 
 def main():
     """
+    asd
     """
-    while(True):
+    while True:
         print_menu()
-        option = int(input('\nEnter your choice:\n')) 
+        option = int(input('\nEnter your choice:\n'))
         if option == 1:
             get_full_list()
         elif option == 2:
@@ -137,6 +162,3 @@ def main():
 
 
 main()
-
-
-#Movie ID: {movie["Movie_ID"]}\n
