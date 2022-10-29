@@ -1,5 +1,5 @@
 """
-Imports.
+Library imports.
 """
 import os
 import gspread
@@ -29,7 +29,8 @@ menu_options = {
 
 def print_menu():
     """
-    Prints welcome message, info message and options menu to user from a for loop.
+    Prints welcome message, info message and options menu
+    to user from a for loop.
     """
     print("\n    WELCOME TO YOUR OWN MOVIE DATABASE PROGRAM!")
     print("    -------------------------------------------")
@@ -55,7 +56,8 @@ def clear():
 
 def get_full_list():
     """
-    Function with a for loop that gets all movies from google sheets sorted in ratings order from best to worst
+    Function with a for loop that gets all movies from google sheets sorted in
+    ratings order from best to worst
     and prints the list to the output.
     """
     clear()
@@ -70,7 +72,8 @@ def get_full_list():
 
 def get_top_ten():
     """
-    Function with a for loop that gets the top 10 movies with the best rating(best-worst)
+    Function with a for loop that gets the top 10 movies with the best
+    rating(best-worst)
     and prints the list to the output.
     """
     clear()
@@ -86,35 +89,54 @@ def get_top_ten():
 def update_worksheet():
     """
     Function with if/else statements for the 'Add New Movie & Rating option'.
-    It let's you enter a movie title that is a string and a raiting that is a float number.
-    Then adds the new movie to the google sheet and gives it a unique ID number.
+    It let's you enter a movie title that is a string and a raiting that is a
+    float number.
+    Then adds the new movie to the google sheet and gives it a unique ID
+    number.
     """
     clear()
     title = input("Enter Movie Title: ")
-    rating = input("Enter Movie Rating (0.0 - 5.0): ")
-    if validate_input_rating(rating):
-        if float(rating) <= 5.0:
-            worksheet_to_update = SHEET.worksheet("title_ratings")
-            movies = title_ratings.get_all_records()
-            max_value = max(movies, key=lambda x: int(x["Movie_ID"]))
-            new_id = int(max_value["Movie_ID"]) + 1
-            worksheet_to_update.append_row([title, rating, new_id])
-            print(f"\nADDED\nMovie: {title}\nRating: {rating}")
-            input("\nPress Enter to Return to Menu: ")
-            clear()
+    if validate_input_title(title):
+        rating = input("Enter Movie Rating (0.0 - 5.0): ")
+        if validate_input_rating(rating):
+            if float(rating) <= 5.0:
+                worksheet_to_update = SHEET.worksheet("title_ratings")
+                movies = title_ratings.get_all_records()
+                max_value = max(movies, key=lambda x: int(x["Movie_ID"]))
+                new_id = int(max_value["Movie_ID"]) + 1
+                worksheet_to_update.append_row([title, rating, new_id])
+                print(f"\nADDED\nMovie: {title}\nRating: {rating}")
+                input("\nPress Enter to Return to Menu: ")
+                clear()
+            else:
+                clear()
+                print("""Invalid data: Rating must
+                be a float between 0.0 - 5.0.\n""")
+                input("\nPress Enter to return to add new movie option: ")
+                update_worksheet()
         else:
-            clear()
-            print("Invalid data: Rating must be a float between 0.0 - 5.0.\n")
             input("\nPress Enter to return to add new movie option: ")
             update_worksheet()
     else:
+        clear()
+        print("Invalid data: Title can't be left empty.\n")
         input("\nPress Enter to return to add new movie option: ")
         update_worksheet()
 
 
+def validate_input_title(title):
+    """
+    Validate that the user input is not empty.
+    """
+    if len(title) > 0:
+        return True
+    else:
+        return False
+
+
 def validate_input_rating(value):
     """
-
+    Validates that the user input is a float number.
     """
     try:
         float(value)
@@ -128,20 +150,32 @@ def validate_input_rating(value):
 
 def delete_movie():
     """
-    Function with a for loop that prints a list of all movies with the ID numbers and 
-    let's you delete a movie from the list by entering the movie ID number.
+    Function with a for loop that prints a list of all movies with the ID
+    numbers and let's you delete a movie from the list by
+    entering the movie ID number.
     """
     clear()
     print("ALL MOVIES:\n")
     movies = title_ratings.get_all_records()
     full_list = sorted(movies, key=lambda d: d["Ratings"], reverse=True)
+    id_list = []
     for movie in full_list:
+        id_list.append(str(movie["Movie_ID"]))
         print(f'Title: {movie["Title"]}\nRatings: {movie["Ratings"]}')
         print(f'Movie ID: {movie["Movie_ID"]}\n')
     movie_id = input("Enter Movie ID: ")
-    row = title_ratings.find(movie_id, in_column=3).row
-    title_ratings.delete_rows(row)
-    clear()
+    if movie_id in id_list:
+        row = title_ratings.find(movie_id, in_column=3).row
+        title_ratings.delete_rows(row)
+        clear()
+        print(f"Deleted movie: with ID {movie_id}\n")
+        input("\nPress Enter to return to menu: ")
+        clear()
+    else:
+        clear()
+        print(f"Invalid ID: No movie found with ID: {movie_id}\n")
+        input("\nPress Enter to return to menu: ")
+        clear()
 
 
 def main():
@@ -164,11 +198,16 @@ def main():
                 print("Thanks message before exiting")
                 exit()
             else:
-                print("Invalid option. Please enter a number between 1 and 4.")
+                clear()
+                print("""Invalid option:
+                Please enter a number between 1 and 4.\n""")
+                input("\nPress Enter to return to menu: ")
+                clear()
         except ValueError:
             clear()
-            print("Invalid option. Please enter a number between 1 and 4.\n")
+            print("Invalid option: Please enter a number between 1 and 4.\n")
             input("\nPress Enter to return to menu: ")
+            clear()
 
 
 if __name__ == "__main__":
