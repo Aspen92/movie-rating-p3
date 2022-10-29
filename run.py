@@ -62,6 +62,8 @@ def get_full_list():
     and prints the list to the output.
     """
     clear()
+    print("\n\n\n\n")
+    print("-------------------------------------------")
     print("ALL MOVIES:\n")
     movies = title_ratings.get_all_records()
     full_list = sorted(movies, key=lambda d: d["Ratings"], reverse=True)
@@ -78,6 +80,8 @@ def get_top_ten():
     and prints the list to the output.
     """
     clear()
+    print("\n\n\n\n")
+    print("-------------------------------------------")
     print("TOP 10 MOVIES\n")
     movies = title_ratings.get_all_records()
     newlist = sorted(movies, key=lambda d: d["Ratings"], reverse=True)
@@ -156,6 +160,8 @@ def delete_movie():
     entering the movie ID number.
     """
     clear()
+    print("\n\n\n\n")
+    print("-------------------------------------------")
     print("ALL MOVIES:\n")
     movies = title_ratings.get_all_records()
     full_list = sorted(movies, key=lambda d: d["Ratings"], reverse=True)
