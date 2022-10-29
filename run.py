@@ -1,5 +1,6 @@
 """
-Library imports.
+Code Institute, project 3.
+MOVIE DATABASE PROGRAM by Christofer Asplund.
 """
 import os
 import gspread
@@ -168,7 +169,7 @@ def delete_movie():
         row = title_ratings.find(movie_id, in_column=3).row
         title_ratings.delete_rows(row)
         clear()
-        print(f"Deleted movie: with ID {movie_id}\n")
+        print(f"Deleted movie with ID: {movie_id}\n")
         input("\nPress Enter to return to menu: ")
         clear()
     else:
