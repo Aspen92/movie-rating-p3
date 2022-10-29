@@ -1,6 +1,6 @@
 """
-Code Institute, project 3.
 MOVIE DATABASE PROGRAM by Christofer Asplund.
+Code Institute, project 3.
 """
 import os
 import gspread
@@ -196,7 +196,7 @@ def main():
             elif option == 4:
                 delete_movie()
             elif option == 5:
-                print("Thanks message before exiting")
+                print("Exit movie database!")
                 exit()
             else:
                 clear()
