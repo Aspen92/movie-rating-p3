@@ -98,7 +98,7 @@ def update_worksheet():
     clear()
     title = input("Enter Movie Title: ")
     if validate_input_title(title):
-        rating = input("Enter Movie Rating (0.0 - 5.0): ")
+        rating = input("Enter Movie Rating (0.0 - 5.0):\n")
         if validate_input_rating(rating):
             if float(rating) <= 5.0:
                 worksheet_to_update = SHEET.worksheet("title_ratings")
@@ -107,21 +107,21 @@ def update_worksheet():
                 new_id = int(max_value["Movie_ID"]) + 1
                 worksheet_to_update.append_row([title, rating, new_id])
                 print(f"\nADDED\nMovie: {title}\nRating: {rating}")
-                input("\nPress Enter to Return to Menu: ")
+                input("\nPress Enter to Return to Menu:\n")
                 clear()
             else:
                 clear()
                 print("""Invalid data: Rating must
                 be a float between 0.0 - 5.0.\n""")
-                input("\nPress Enter to return to add new movie option: ")
+                input("\nPress Enter to return to add new movie option:\n")
                 update_worksheet()
         else:
-            input("\nPress Enter to return to add new movie option: ")
+            input("\nPress Enter to return to add new movie option:\n")
             update_worksheet()
     else:
         clear()
         print("Invalid data: Title can't be left empty.\n")
-        input("\nPress Enter to return to add new movie option: ")
+        input("\nPress Enter to return to add new movie option:\n")
         update_worksheet()
 
 
@@ -170,12 +170,12 @@ def delete_movie():
         title_ratings.delete_rows(row)
         clear()
         print(f"Deleted movie with ID: {movie_id}\n")
-        input("\nPress Enter to return to menu: ")
+        input("\nPress Enter to return to menu:\n")
         clear()
     else:
         clear()
         print(f"Invalid ID: No movie found with ID: {movie_id}\n")
-        input("\nPress Enter to return to menu: ")
+        input("\nPress Enter to return to menu:\n")
         clear()
 
 
@@ -202,12 +202,12 @@ def main():
                 clear()
                 print("""Invalid option:
                 Please enter a number between 1 and 4.\n""")
-                input("\nPress Enter to return to menu: ")
+                input("\nPress Enter to return to menu:\n")
                 clear()
         except ValueError:
             clear()
             print("Invalid option: Please enter a number between 1 and 4.\n")
-            input("\nPress Enter to return to menu: ")
+            input("\nPress Enter to return to menu:\n")
             clear()
 
 
