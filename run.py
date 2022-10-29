@@ -18,6 +18,18 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("movie_ratings_p3")
 
+
+class Movie:
+    """
+    Main movie class. Sets title, rating and an id of the movie.
+    """
+
+    def __init__(self, title, rating, movie_id):
+        self.title = title
+        self.rating = rating
+        self.movie_id = movie_id
+
+
 title_ratings = SHEET.worksheet("title_ratings")
 menu_options = {
     1: "Show Full Movies List",
@@ -100,7 +112,7 @@ def update_worksheet():
     number.
     """
     clear()
-    title = input("Enter Movie Title: ")
+    title = input("Enter Movie Title:\n")
     if validate_input_title(title):
         rating = input("Enter Movie Rating (0.0 - 5.0):\n")
         if validate_input_rating(rating):
@@ -109,7 +121,9 @@ def update_worksheet():
                 movies = title_ratings.get_all_records()
                 max_value = max(movies, key=lambda x: int(x["Movie_ID"]))
                 new_id = int(max_value["Movie_ID"]) + 1
-                worksheet_to_update.append_row([title, rating, new_id])
+                new_movie = Movie(title, rating, new_id)
+                worksheet_to_update.append_row(
+                    [new_movie.title, new_movie.rating, new_movie.movie_id])
                 print(f"\nADDED\nMovie: {title}\nRating: {rating}")
                 input("\nPress Enter to Return to Menu:\n")
                 clear()
