@@ -94,6 +94,8 @@ I have manually tested the program by doing the following:
 
 - Option 3 had an input error when entering a string into the rating input. I solved this by making sure the input only accepts a float number between 0.0 - 5.0 and added a print statement saying "Invalid data: Rating must be a float between 0.0 - 5.0." if a string is entered.
 
+- Option 4 when trying to delete a movie I had a bug when I was trying to compare the movie id with the id that the user enters. When reading from the google sheet, gspread returns the movie id as an int and the input from the user is always a string, so the comparison was always returning false. I solved the issue by parsing the movie id when reading from gspread to a string so the two values could be compared correctly.
+
 ### Unsolved Bugs
  
 - No unsolved bugs remaining.
@@ -101,11 +103,28 @@ I have manually tested the program by doing the following:
 
 ## Deployment
 
+ This project was deployed using Code Instute's mock terminal on Heroku.
+
+- The application was deployed to Heroku. The steps I took to deploy are as follows:
+  - From my IDE I pushed my final code to GitHub, making sure that my creds.json file was mentioned in the gitignore file
+to keep confidential information safe.
+  - I created an account on Heroku.com.
+  - On Heroku I chose the option to create a new application.
+  - Here I entered a name for my application and chose Europe as region.
+  - In the settings tab I added necessary information to the config vars section.
+  - In the deploy tab I chose to connect my application to GitHub and searched for my repository name and pressed connect.
+  - Then I chose the manually deploy option and deployed my main branch.
+  - When Heroku was done building the application I received a live link to the deployed application.
+
+The live link can be found here - https://movie-database-p3.herokuapp.com/
+
+
 This project was deployed using Code Instute's mock terminal on Heroku.
 
-- Step by step for deployment: 
-  - Fork or clone this repository.
+- Step by step that I took to deploy my app: 
+  - Created an account on Heroku.com.
   - Create a new Heroku app.
+  - 
   - Buildbacks should be set in this order: Python and NodeJs.
   - The Heroku app should be linked to this repository
   - Then click deploy and wait while the app is being built, when completed click view.
